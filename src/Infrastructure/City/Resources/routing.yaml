@@ -1,0 +1,4 @@
+city_get_check:
+  path: /check
+  controller: app.check_city_controller::index
+  methods:  GET

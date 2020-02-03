@@ -1,0 +1,4 @@
+city:
+    resource: '../src/Infrastructure/City/Resources/routing.yaml'
+    type: yaml
+    name_prefix: 'city_'

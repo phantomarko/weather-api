@@ -1,0 +1,6 @@
+services:
+    app.curl_http_requester:
+        class:  App\Infrastructure\Common\Service\CurlHttpRequester
+
+    app.kelvin_to_celsius_temperature_converter:
+        class:  App\Application\Common\Service\TemperatureConverter\KelvinToCelsiusTemperatureConverter

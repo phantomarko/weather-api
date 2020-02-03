@@ -1,0 +1,36 @@
+parameters:
+    open_weather_url: '%env(OPEN_WEATHER_URL)%'
+    open_weather_key: '%env(OPEN_WEATHER_KEY)%'
+    rival_name: '%env(CITY_CHECKER_RIVAL_NAME)%'
+    criteria_to_check:
+        - { alias: 'naming', active: true }
+        - { alias: 'daytemp', active: true }
+        - { alias: 'rival', active: true }
+
+services:
+    app.open_weather_city_repository:
+        class:  App\Infrastructure\City\Repository\OpenWeatherCityRepository
+        arguments:
+            - '@app.curl_http_requester'
+            - '%open_weather_url%'
+            - '%open_weather_key%'
+            - '@app.kelvin_to_celsius_temperature_converter'
+
+    app.checker_factory:
+        class:  App\Domain\City\Service\CheckerFactory
+        arguments:
+            - '@app.open_weather_city_repository'
+            - '%rival_name%'
+
+    app.check_city_service:
+        class:  App\Application\City\Service\CheckCity\CheckCityService
+        arguments:
+            - '@app.open_weather_city_repository'
+            - '%criteria_to_check%'
+            - '@app.checker_factory'
+
+    app.check_city_controller:
+        class: App\Infrastructure\City\Controller\CheckCityController
+        public: true
+        arguments:
+            - '@app.check_city_service'
